@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 	];
 
 	return (
-		<nav className='relative mx-auto px-12 py-6 bg-primaryRed'>
+		<nav className='relative mx-auto px-4 lg:px-16 py-6 bg-primaryRed'>
 			<div className='flex items-center justify-between'>
 				<h1 className='text-white uppercase font-medium text-xl'>Finna Eat</h1>
 				<div className='hidden md:space-x-8 lg:space-x-12 md:flex'>
@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
 					id='menu'
 					className={
 						isMenuOpen
-							? 'flex absolute flex-col items-center self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md'
+							? 'mobile-menu'
 							: 'absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md'
 					}
 				>

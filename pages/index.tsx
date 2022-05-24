@@ -1,8 +1,8 @@
-import Navbar from '@components/navbar.component';
+import Layout from '@components/layout/layout.component';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
-	return <Navbar />;
+	return <Layout>content here</Layout>;
 };
 
 export default Home;

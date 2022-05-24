@@ -18,6 +18,16 @@ a {
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.btn-primary {
+		@apply inline-block px-6 py-2.5 bg-primaryRed text-white font-medium text-base leading-tight uppercase rounded shadow-md hover:bg-primaryRedHover hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primaryRedActive active:shadow-lg transition duration-150 ease-in-out;
+	}
+
+	.mobile-menu {
+		@apply flex absolute flex-col items-center self-end py-8 mt-6 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md z-10 rounded-lg shadow-lg border-1 border-primaryBrown border-solid;
+	}
+}
+
 .hamburger {
 	cursor: pointer;
 	width: 24px;
@@ -62,4 +72,8 @@ a {
 
 .open .hamburger-bottom {
 	transform: rotate(-45deg) translateY(6px) translate(-6px);
+}
+
+.slogan {
+	text-shadow: #fff 0 0 10px;
 }

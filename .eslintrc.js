@@ -32,7 +32,7 @@ module.exports = {
 		],
 		'lines-between-class-members': 0,
 		'import/prefer-default-export': 0,
-		'max-len': ['error', { code: 175, ignoreComments: true }],
+		'max-len': ['error', { code: 180, ignoreComments: true }],
 		'no-console': 'error',
 		'no-alert': 'error',
 		'no-caller': 'error',

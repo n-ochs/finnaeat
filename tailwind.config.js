@@ -9,6 +9,9 @@ module.exports = {
 			},
 			borderWidth: {
 				1: '1px'
+			},
+			width: {
+				64: '16rem'
 			}
 		}
 	},

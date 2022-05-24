@@ -5,6 +5,8 @@ module.exports = {
 		extend: {
 			colors: {
 				primaryRed: '#C41D33',
+				primaryRedHover: '#b01a2e',
+				primaryRedActive: '#891424',
 				primaryBrown: '#1e1415'
 			},
 			borderWidth: {
@@ -12,6 +14,9 @@ module.exports = {
 			},
 			width: {
 				64: '16rem'
+			},
+			backgroundImage: {
+				'hero-pattern': "url('/imgs/hero.png')"
 			}
 		}
 	},

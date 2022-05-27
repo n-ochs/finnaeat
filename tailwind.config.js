@@ -1,7 +1,12 @@
 /* eslint-disable */
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
 	content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
 	theme: {
+		screens: {
+			'xs': '500px',
+			...defaultTheme.screens,
+		},
 		extend: {
 			colors: {
 				primaryRed: '#C41D33',
@@ -16,7 +21,8 @@ module.exports = {
 				64: '16rem'
 			},
 			backgroundImage: {
-				'hero-pattern': "url('/imgs/hero.png')"
+				'hero-pattern': "url('/imgs/hero.png')",
+				'menu-background': "url('/imgs/MenuBackground.jpg')"
 			}
 		}
 	},

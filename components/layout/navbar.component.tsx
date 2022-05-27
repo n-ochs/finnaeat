@@ -13,10 +13,10 @@ const Navbar: React.FC = () => {
 	];
 
 	return (
-		<nav className='relative mx-auto px-4 lg:px-16 py-6 bg-primaryRed'>
+		<nav className='relative mx-auto bg-primaryRed px-4 py-6 lg:px-16'>
 			<div className='flex items-center justify-between'>
-				<h1 className='text-white uppercase font-medium text-xl'>Finna Eat</h1>
-				<div className='hidden md:space-x-8 lg:space-x-12 md:flex'>
+				<h1 className='text-xl font-medium uppercase text-white'>Finna Eat</h1>
+				<div className='hidden md:flex md:space-x-8 lg:space-x-12'>
 					{menuItems.map((item, index) => {
 						return (
 							<Link href={item.route} key={`menu_item_${index}`}>
@@ -25,14 +25,14 @@ const Navbar: React.FC = () => {
 						);
 					})}
 				</div>
-				<a href='#' className='hidden p-3 px-6 pt-3 bg-primaryBrown text-white rounded-full baseline hover:bg-stone-800 md:block'>
+				<a href='#' className='baseline hidden rounded-full bg-primaryBrown p-3 px-6 pt-3 text-white hover:bg-stone-800 md:block'>
 					Book Us Today!
 				</a>
 
 				<button
 					id='menu-btn'
 					onClick={() => setIsMenuOpen(!isMenuOpen)}
-					className={isMenuOpen ? 'open block hamburger md:hidden focus:outline-none' : 'block hamburger md:hidden focus:outline-none'}
+					className={isMenuOpen ? 'open hamburger block focus:outline-none md:hidden' : 'hamburger block focus:outline-none md:hidden'}
 				>
 					<span className='hamburger-top'></span>
 					<span className='hamburger-middle'></span>
@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
 					className={
 						isMenuOpen
 							? 'mobile-menu'
-							: 'absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md'
+							: 'absolute left-6 right-6 mt-10 hidden flex-col items-center space-y-6 self-end bg-white py-8 font-bold drop-shadow-md sm:w-auto sm:self-center'
 					}
 				>
 					{menuItems.map((item, index) => {

@@ -9,12 +9,12 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
 	return (
-		<>
+		<div className='overflow-x-hidden'>
 			<Navbar />
 			<Hero />
 			{children || null}
 			<Footer />
-		</>
+		</div>
 	);
 };
 

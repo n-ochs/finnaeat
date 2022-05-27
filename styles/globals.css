@@ -20,11 +20,11 @@ a {
 
 @layer components {
 	.btn-primary {
-		@apply inline-block px-6 py-2.5 bg-primaryRed text-white font-medium text-base leading-tight uppercase rounded shadow-md hover:bg-primaryRedHover hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primaryRedActive active:shadow-lg transition duration-150 ease-in-out;
+		@apply inline-block rounded bg-primaryRed px-6 py-2.5 text-base font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primaryRedHover hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primaryRedActive active:shadow-lg;
 	}
 
 	.mobile-menu {
-		@apply flex absolute flex-col items-center self-end py-8 mt-6 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md z-10 rounded-lg shadow-lg border-1 border-primaryBrown border-solid;
+		@apply absolute left-6 right-6 z-10 mt-6 flex flex-col items-center space-y-6 self-end rounded-lg border-1 border-solid border-primaryBrown bg-white py-8 font-bold shadow-lg drop-shadow-md sm:w-auto sm:self-center;
 	}
 }
 

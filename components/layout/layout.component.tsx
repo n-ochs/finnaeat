@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 import Footer from './footer.component';
 import Hero from './hero.component';
@@ -10,6 +11,9 @@ interface ILayoutProps {
 const Layout: React.FC<ILayoutProps> = ({ children }) => {
 	return (
 		<div className='overflow-x-hidden'>
+			<Head>
+				<title>Finna-Eat</title>
+			</Head>
 			<Navbar />
 			<Hero />
 			{children || null}

@@ -12,7 +12,8 @@ module.exports = {
 				primaryRed: '#C41D33',
 				primaryRedHover: '#b01a2e',
 				primaryRedActive: '#891424',
-				primaryBrown: '#1e1415'
+				primaryBrown: '#1e1415',
+				footerButtonHover: '#241416'
 			},
 			borderWidth: {
 				1: '1px'

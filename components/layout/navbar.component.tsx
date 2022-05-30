@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
 				<button
 					id='menu-btn'
 					onClick={() => setIsMenuOpen(!isMenuOpen)}
-					className={isMenuOpen ? 'open hamburger block focus:outline-none md:hidden' : 'hamburger block focus:outline-none md:hidden'}
+					className={isMenuOpen ? 'open hamburger z-30 block focus:outline-none md:hidden' : 'hamburger block focus:outline-none md:hidden'}
 				>
 					<span className='hamburger-top'></span>
 					<span className='hamburger-middle'></span>
@@ -41,18 +41,27 @@ const Navbar: React.FC = () => {
 			</div>
 
 			<div className='md:hidden'>
-				<div id='menu' className={isMenuOpen ? 'mobile-menu' : 'hidden'}>
-					{menuItems.map((item, index) => {
-						return (
-							<Link href={item.route} key={`mobile_menu_item_${index}`}>
-								<a className='font-medium hover:text-gray-200'>{item.label}</a>
+				<div
+					id='menu'
+					className={isMenuOpen ? 'absolute inset-0 z-20 flex h-screen w-screen flex-col bg-black text-white opacity-90' : 'hidden'}
+					onClick={() => setIsMenuOpen(false)}
+				></div>
+				{isMenuOpen && (
+					<div className='absolute inset-x-0 z-30 flex w-full flex-col'>
+						{menuItems.map((item, index) => {
+							return (
+								<Link href={item.route} key={`mobile_menu_item_${index}`}>
+									<a className='flex h-12 items-center justify-center font-medium text-white'>{item.label}</a>
+								</Link>
+							);
+						})}
+						{isMenuOpen && (
+							<Link href='#'>
+								<a className='flex h-12 items-center justify-center font-medium text-white'>Book Us Today!</a>
 							</Link>
-						);
-					})}
-					<Link href='#'>
-						<a className='font-medium hover:text-gray-200'>Book Us Today!</a>
-					</Link>
-				</div>
+						)}
+					</div>
+				)}
 			</div>
 		</nav>
 	);

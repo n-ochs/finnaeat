@@ -41,14 +41,7 @@ const Navbar: React.FC = () => {
 			</div>
 
 			<div className='md:hidden'>
-				<div
-					id='menu'
-					className={
-						isMenuOpen
-							? 'mobile-menu'
-							: 'absolute left-6 right-6 mt-10 hidden flex-col items-center space-y-6 self-end bg-white py-8 font-bold drop-shadow-md sm:w-auto sm:self-center'
-					}
-				>
+				<div id='menu' className={isMenuOpen ? 'mobile-menu' : 'hidden'}>
 					{menuItems.map((item, index) => {
 						return (
 							<Link href={item.route} key={`mobile_menu_item_${index}`}>

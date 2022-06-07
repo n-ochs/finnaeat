@@ -22,10 +22,6 @@ a {
 	.btn-primary {
 		@apply inline-block rounded bg-primaryRed px-6 py-2.5 text-base font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primaryRedHover hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primaryRedActive active:shadow-lg;
 	}
-
-	.mobile-menu {
-		@apply absolute left-6 right-6 z-10 mt-6 flex flex-col items-center space-y-6 self-end rounded-lg border-1 border-solid border-primaryBrown bg-white py-8 font-bold shadow-lg drop-shadow-md sm:w-auto sm:self-center;
-	}
 }
 
 .hamburger {

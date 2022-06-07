@@ -1,4 +1,4 @@
-const MenuData: any = {
+const PlaceholderMenuData: any = {
 	food: [
 		{
 			title: 'Carnivore',
@@ -83,4 +83,4 @@ const MenuData: any = {
 	]
 };
 
-export default MenuData;
+export default PlaceholderMenuData;

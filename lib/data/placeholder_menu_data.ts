@@ -1,4 +1,6 @@
-const PlaceholderMenuData: any = {
+import { IPlaceholderFoodMenuData } from '@lib/types';
+
+const PlaceholderMenuData: { food: IPlaceholderFoodMenuData[] } = {
 	food: [
 		{
 			title: 'Carnivore',

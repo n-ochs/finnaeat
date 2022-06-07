@@ -1,8 +1,8 @@
-import Head from 'next/head';
 import React from 'react';
-import Footer from './footer.component';
-import Hero from './hero.component';
-import Navbar from './navbar.component';
+import Head from 'next/head';
+import Footer from '@components/layout/footer.component';
+import Hero from '@components/layout/hero.component';
+import Navbar from '@components/layout/navbar.component';
 
 interface ILayoutProps {
 	children?: React.ReactNode;

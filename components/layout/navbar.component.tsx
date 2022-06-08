@@ -1,12 +1,15 @@
 import Link from 'next/link';
+import { NextRouter, useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 const Navbar: React.FC = () => {
+	const router: NextRouter = useRouter();
+
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
 	const menuItems: { route: string; label: string }[] = [
-		{ route: '#', label: 'Home' },
-		{ route: '#', label: 'About' },
+		{ route: '/', label: 'Home' },
+		{ route: '/about', label: 'About' },
 		{ route: '#', label: 'Find' },
 		{ route: '#', label: 'Events' },
 		{ route: '#', label: 'Contact' }
@@ -15,12 +18,12 @@ const Navbar: React.FC = () => {
 	return (
 		<nav className='relative mx-auto bg-primaryRed px-4 py-6 lg:px-16'>
 			<div className='flex items-center justify-between'>
-				<h1 className='text-xl font-medium uppercase text-white'>Finna Eat</h1>
+				<h1 className='text-xl font-medium uppercase text-white'>Finna-Eat</h1>
 				<div className='hidden md:flex md:space-x-8 lg:space-x-12'>
 					{menuItems.map((item, index) => {
 						return (
 							<Link href={item.route} key={`menu_item_${index}`}>
-								<a className='font-medium text-white hover:text-gray-200'>{item.label}</a>
+								<a className={router.pathname === item.route ? 'navbar-item bg-primaryRedActiveRoute' : 'navbar-item'}>{item.label}</a>
 							</Link>
 						);
 					})}

@@ -10,12 +10,12 @@ import { IPreparedFoodMenuData } from '@lib/types';
 import { db } from '@lib/firebase.config';
 
 import { doc } from 'firebase/firestore';
-import { useDocument } from 'react-firebase-hooks/firestore';
+import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 
 const Menu: React.FC = () => {
 	const [menuData, setMenuData] = useState<IPreparedFoodMenuData>();
 
-	const [value, loading, error] = useDocument(doc(db, 'menu', 'z6Lx7enScX1qtiNo7jDe'));
+	const [value, loading, error] = useDocumentOnce(doc(db, 'menu', 'z6Lx7enScX1qtiNo7jDe'));
 
 	useEffect(() => {
 		setMenuData(value?.data()?.food);

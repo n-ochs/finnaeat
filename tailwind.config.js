@@ -12,6 +12,7 @@ module.exports = {
 				primaryRed: '#C41D33',
 				primaryRedHover: '#b01a2e',
 				primaryRedActive: '#891424',
+				primaryRedActiveRoute: '#d04a5c',
 				primaryBrown: '#1e1415',
 				footerButtonHover: '#241416'
 			},

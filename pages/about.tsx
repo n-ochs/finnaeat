@@ -4,7 +4,7 @@ import Layout from '@components/layout/layout.component';
 const About: NextPage = () => {
 	return (
 		<Layout>
-			<div>about page</div>
+			<div className='p-8'>about page</div>
 		</Layout>
 	);
 };

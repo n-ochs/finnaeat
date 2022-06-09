@@ -46,9 +46,9 @@ const Navbar: React.FC = () => {
 			<div className='md:hidden'>
 				<div
 					id='menu'
-					className={isMenuOpen ? 'absolute inset-0 z-20 flex h-screen w-screen flex-col bg-black text-white opacity-90' : 'hidden'}
+					className={isMenuOpen ? 'fixed inset-0 z-20 flex h-screen w-screen flex-col bg-black text-white opacity-90' : 'hidden'}
 					onClick={() => setIsMenuOpen(false)}
-				></div>
+				/>
 				{isMenuOpen && (
 					<div className='absolute inset-x-0 z-30 flex w-full flex-col'>
 						{menuItems.map((item, index) => {

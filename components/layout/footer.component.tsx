@@ -3,15 +3,14 @@ import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
 
 import { useAuthContext } from '@lib/auth.context';
-import { auth, db } from '@lib/firebase.config';
+import { auth, socialLinksRef } from '@lib/firebase.config';
 import { IContactInformationData, ISocialLinksData } from '@lib/types';
 
 import { signOut } from 'firebase/auth';
-import { doc } from 'firebase/firestore';
 import { AiOutlineMail } from 'react-icons/ai';
 import { BsTelephone } from 'react-icons/bs';
 import { FaFacebookSquare, FaInstagram, FaTiktok } from 'react-icons/fa';
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
+import { useDocument } from 'react-firebase-hooks/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Footer: React.FC = () => {
@@ -21,7 +20,7 @@ const Footer: React.FC = () => {
 	const [contactInformation, setContactInformation] = useState<IContactInformationData>();
 	const [socialLinks, setSocialLinks] = useState<ISocialLinksData>();
 
-	const [value, loading] = useDocumentOnce(doc(db, 'business-details', 'mfMcy5LzgM81ONbwlyJ9'));
+	const [value, loading] = useDocument(socialLinksRef);
 
 	const handleSignOut: () => void = () => {
 		router.push('/');

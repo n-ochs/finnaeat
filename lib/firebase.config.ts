@@ -1,7 +1,7 @@
 /******************** IMPLEMENT FIREBASE RULES BEFORE PROD ********************/
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
-import { Firestore, getFirestore } from 'firebase/firestore';
+import { DocumentData, DocumentReference, Firestore, doc, getFirestore } from 'firebase/firestore';
 
 type FirebaseConfigType = {
 	apiKey: string;
@@ -29,3 +29,6 @@ export const db: Firestore = getFirestore(firebaseApp);
 
 // Initializing Firebase Auth
 export const auth: Auth = getAuth();
+
+// Social Links Ref
+export const socialLinksRef: DocumentReference<DocumentData> = doc(db, 'business-details', 'mfMcy5LzgM81ONbwlyJ9');

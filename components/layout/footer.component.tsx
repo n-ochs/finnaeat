@@ -23,15 +23,16 @@ const Footer: React.FC = () => {
 	const [value, loading] = useDocument(socialLinksRef);
 
 	const handleSignOut: () => void = () => {
-		router.push('/');
-		signOut(auth)
-			.then(() => {
-				setActiveUser(null);
-				toast.success('Successfully signed out');
-			})
-			.catch(() => {
-				toast.error('Trouble signing out. Please try again.');
-			});
+		router.push('/').then(() => {
+			signOut(auth)
+				.then(() => {
+					setActiveUser(null);
+					toast.success('Successfully signed out');
+				})
+				.catch(() => {
+					toast.error('Trouble signing out. Please try again.');
+				});
+		});
 	};
 
 	useEffect(() => {

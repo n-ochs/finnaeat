@@ -1,12 +1,7 @@
-import Image from 'next/image';
 import React from 'react';
+import Image from 'next/image';
 
-interface IMenuCardProps {
-	imgSrc?: string;
-	itemTitle: string;
-	itemDescription: string;
-	itemPrice?: number;
-}
+import { IMenuCardProps } from '@lib/types';
 
 const MenuCard: React.FC<IMenuCardProps> = ({ itemTitle, itemDescription }) => {
 	// Currently using stock image, title, & description

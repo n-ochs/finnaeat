@@ -7,15 +7,14 @@ import MenuLoaderCard from '@components/menu/menu_loader_card.component';
 
 import PlaceholderMenuData from '@lib/data/placeholder_menu_data';
 import { IPreparedFoodMenuData } from '@lib/types';
-import { db } from '@lib/firebase.config';
+import { foodMenuRef } from '@lib/firebase.config';
 
-import { doc } from 'firebase/firestore';
 import { useDocumentOnce } from 'react-firebase-hooks/firestore';
 
 const Menu: React.FC = () => {
 	const [menuData, setMenuData] = useState<IPreparedFoodMenuData>();
 
-	const [value, loading, error] = useDocumentOnce(doc(db, 'menu', 'z6Lx7enScX1qtiNo7jDe'));
+	const [value, loading, error] = useDocumentOnce(foodMenuRef);
 
 	useEffect(() => {
 		setMenuData(value?.data()?.food);

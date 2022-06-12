@@ -2,25 +2,21 @@ import React, { FormEvent, useRef, useState } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
 import { auth } from '@lib/firebase.config';
-import { useAuthContext } from '@lib/auth.context';
 
-import { User, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import toast from 'react-hot-toast';
 
 const SignInForm: React.FC = () => {
 	const router: NextRouter = useRouter();
-	const { setActiveUser } = useAuthContext();
 	const emailAddressInputRef: React.MutableRefObject<HTMLInputElement> = useRef(null);
 
 	const [emailAddress, setEmailAddress] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
-	const handleSignIn: (e: FormEvent) => void = (e: FormEvent) => {
+	const handleSignIn: (e: FormEvent) => void = async (e: FormEvent) => {
 		e.preventDefault();
-		signInWithEmailAndPassword(auth, emailAddress, password)
-			.then((userCredentials) => {
-				const user: User = userCredentials?.user;
-				setActiveUser(user);
+		await signInWithEmailAndPassword(auth, emailAddress, password)
+			.then(() => {
 				toast.success('Successfully signed in');
 				router.push('/admin');
 			})

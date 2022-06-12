@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import { User } from 'firebase/auth';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Unsubscribe, User, onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase.config';
 
 interface IAuthContext {
 	activeUser: User;
@@ -18,6 +19,16 @@ const useAuthContext: () => IAuthContext = () => {
 
 const AuthContextProvider: React.FC<IAuthContextProviderProps> = ({ children }) => {
 	const [activeUser, setActiveUser] = useState<User>(null);
+
+	useEffect(() => {
+		const unsubscribe: Unsubscribe = onAuthStateChanged(auth, (currentuser) => {
+			setActiveUser(currentuser);
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
 
 	return <AuthContext.Provider value={{ activeUser, setActiveUser }}>{children}</AuthContext.Provider>;
 };

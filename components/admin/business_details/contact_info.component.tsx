@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { IContactInformationData } from '@lib/types';
-import { socialLinksRef } from '@lib/firebase.config';
+import { businessDetailsRef } from '@lib/firebase.config';
 
 import toast from 'react-hot-toast';
 import { AiOutlineMail } from 'react-icons/ai';
@@ -11,7 +11,7 @@ import { updateDoc } from 'firebase/firestore';
 import { useDocument } from 'react-firebase-hooks/firestore';
 
 const ContactInfo: React.FC = () => {
-	const [value, loading] = useDocument(socialLinksRef);
+	const [value, loading] = useDocument(businessDetailsRef);
 
 	const [contactInformation, setContactInformation] = useState<IContactInformationData>();
 
@@ -26,7 +26,7 @@ const ContactInfo: React.FC = () => {
 
 	const handlePhoneSave: () => void = () => {
 		if (newPhoneNumber.length > 0) {
-			updateDoc(socialLinksRef, 'contact_information.phone', newPhoneNumber)
+			updateDoc(businessDetailsRef, 'contact_information.phone', newPhoneNumber)
 				.then(() => {
 					toast.success('Updated Phone Number');
 					setPhoneEdit(false);
@@ -48,7 +48,7 @@ const ContactInfo: React.FC = () => {
 
 	const handleEmailSave: () => void = () => {
 		if (newEmailAddress.length > 0) {
-			updateDoc(socialLinksRef, 'contact_information.email', newEmailAddress)
+			updateDoc(businessDetailsRef, 'contact_information.email', newEmailAddress)
 				.then(() => {
 					toast.success('Updated Email Address');
 					setEmailEdit(false);

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
 
 import { useAuthContext } from '@lib/auth.context';
-import { auth, socialLinksRef } from '@lib/firebase.config';
+import { auth, businessDetailsRef } from '@lib/firebase.config';
 import { IContactInformationData, ISocialLinksData } from '@lib/types';
 
 import { signOut } from 'firebase/auth';
@@ -20,11 +20,11 @@ const Footer: React.FC = () => {
 	const [contactInformation, setContactInformation] = useState<IContactInformationData>();
 	const [socialLinks, setSocialLinks] = useState<ISocialLinksData>();
 
-	const [value, loading] = useDocument(socialLinksRef);
+	const [value, loading] = useDocument(businessDetailsRef);
 
 	const handleSignOut: () => void = () => {
-		router.push('/').then(() => {
-			signOut(auth)
+		router.push('/').then(async () => {
+			await signOut(auth)
 				.then(() => {
 					setActiveUser(null);
 					toast.success('Successfully signed out');

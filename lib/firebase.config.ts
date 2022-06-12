@@ -30,5 +30,8 @@ export const db: Firestore = getFirestore(firebaseApp);
 // Initializing Firebase Auth
 export const auth: Auth = getAuth();
 
-// Social Links Ref
-export const socialLinksRef: DocumentReference<DocumentData> = doc(db, 'business-details', 'mfMcy5LzgM81ONbwlyJ9');
+// Food Menu Ref
+export const foodMenuRef: DocumentReference<DocumentData> = doc(db, 'menu', 'z6Lx7enScX1qtiNo7jDe');
+
+// Business Details Ref
+export const businessDetailsRef: DocumentReference<DocumentData> = doc(db, 'business-details', 'mfMcy5LzgM81ONbwlyJ9');

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { ISocialLinksData } from '@lib/types';
-import { socialLinksRef } from '@lib/firebase.config';
+import { businessDetailsRef } from '@lib/firebase.config';
 
 import toast from 'react-hot-toast';
 import { FaEdit, FaFacebookSquare, FaInstagram, FaTiktok } from 'react-icons/fa';
@@ -10,7 +10,7 @@ import { updateDoc } from 'firebase/firestore';
 import { useDocument } from 'react-firebase-hooks/firestore';
 
 const SocialLinks: React.FC = () => {
-	const [value, loading] = useDocument(socialLinksRef);
+	const [value, loading] = useDocument(businessDetailsRef);
 
 	const [socialLinks, setSocialLinks] = useState<ISocialLinksData>();
 
@@ -25,7 +25,7 @@ const SocialLinks: React.FC = () => {
 
 	const handleFacebookSave: () => void = () => {
 		if (newFacebookLink.length > 0) {
-			updateDoc(socialLinksRef, 'social_links.facebook', newFacebookLink)
+			updateDoc(businessDetailsRef, 'social_links.facebook', newFacebookLink)
 				.then(() => {
 					toast.success('Updated Facebook Link');
 					setFacebookEdit(false);
@@ -47,7 +47,7 @@ const SocialLinks: React.FC = () => {
 
 	const handleInstagramSave: () => void = () => {
 		if (newInstagramLink.length > 0) {
-			updateDoc(socialLinksRef, 'social_links.instagram', newInstagramLink)
+			updateDoc(businessDetailsRef, 'social_links.instagram', newInstagramLink)
 				.then(() => {
 					toast.success('Updated Instagram Link');
 					setInstagramEdit(false);
@@ -69,7 +69,7 @@ const SocialLinks: React.FC = () => {
 
 	const handleTiktokSave: () => void = () => {
 		if (newTiktokLink.length > 0) {
-			updateDoc(socialLinksRef, 'social_links.tiktok', newTiktokLink)
+			updateDoc(businessDetailsRef, 'social_links.tiktok', newTiktokLink)
 				.then(() => {
 					toast.success('Updated TikTok Link');
 					setTiktokEdit(false);

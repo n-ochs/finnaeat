@@ -23,7 +23,7 @@ module.exports = {
 				64: '16rem'
 			},
 			backgroundImage: {
-				'hero-pattern': "url('/imgs/hero.png')",
+				'hero-pattern': "url('/imgs/Hero.png')",
 				'menu-background': "url('/imgs/MenuBackground.jpg')"
 			}
 		}

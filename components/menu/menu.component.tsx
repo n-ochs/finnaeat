@@ -45,7 +45,7 @@ const Menu: React.FC = () => {
 								<Divider>{foodCategory.category}</Divider>
 								<div className='flex flex-wrap justify-center gap-4'>
 									{foodCategory.items.map((item, j) => {
-										return <MenuCard key={`menu_item_${j}`} itemTitle={item.name} itemDescription={item.description} />;
+										return <MenuCard key={`menu_item_${j}`} itemTitle={item.name} itemDescription={item.description} itemPrice={item.price} />;
 									})}
 								</div>
 							</div>

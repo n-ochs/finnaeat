@@ -17,8 +17,13 @@ import { useDocument } from 'react-firebase-hooks/firestore';
 
 const EditableMenu: React.FC = () => {
 	const [menuData, setMenuData] = useState<IPreparedFoodMenuData>();
+	const [disabled, setDisabled] = useState<boolean>(false);
 
 	const handleAdd: (i: number) => void = (i: number) => {
+		if (disabled) {
+			toast.error('Please finish with new item before adding another.');
+			return;
+		}
 		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
 			if (i !== index) {
 				return item;
@@ -45,6 +50,11 @@ const EditableMenu: React.FC = () => {
 	};
 
 	const handleSave: (i: number, newMenuItem: INewMenuItem) => void = (i: number, newMenuItem: INewMenuItem) => {
+		if (newMenuItem.name.length === 0 && newMenuItem.description.length === 0) {
+			toast.error('You must fill out at least name and description');
+			return;
+		}
+
 		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
 			if (i !== index) {
 				return item;
@@ -65,14 +75,54 @@ const EditableMenu: React.FC = () => {
 			});
 	};
 
+	const handleDelete: (i: number, menuItemIndex: number) => void = (i: number, menuItemIndex: number) => {
+		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
+			if (i !== index) {
+				return item;
+			} else {
+				item.items.splice(menuItemIndex, 1);
+				return item;
+			}
+		});
+
+		updateDoc(foodMenuRef, 'food', newMenuData)
+			.then(() => {
+				toast.success('Deleted Menu Item');
+				setMenuData(newMenuData);
+			})
+			.catch(() => {
+				toast.error('Error deleting Menu Item. Please try again.');
+			});
+	};
+
 	const [value, loading, error] = useDocument(foodMenuRef);
 
 	useEffect(() => {
 		setMenuData(value?.data()?.food);
 	}, [value]);
 
+	useEffect(() => {
+		// Checking to see if we have a new menu item in any of the items arrays. If there is, we need to disabled the edit and delete buttons to prevent any data errors
+		if (menuData) {
+			let errors: string[] = [];
+			for (let i: number = 0; i < menuData?.length; i++) {
+				if (menuData[i].items[menuData[i].items.length - 1].name === '' && menuData[i].items[menuData[i].items.length - 1].description === '') {
+					errors.push('x');
+				}
+			}
+
+			if (errors.length > 0) {
+				setDisabled(true);
+			} else {
+				setDisabled(false);
+			}
+		}
+	}, [menuData]);
+
 	return (
 		<div className='space-y-8'>
+			<h2 className='text-center text-2xl underline'>Menu</h2>
+
 			{loading ? (
 				PlaceholderMenuData.food.map((placeholderCategory, i) => {
 					return (
@@ -109,6 +159,9 @@ const EditableMenu: React.FC = () => {
 													itemIndex={j}
 													categoryIndex={categoryIndex}
 													menuData={menuData}
+													disabled={disabled}
+													handleDelete={handleDelete}
+													setDisabled={setDisabled}
 												/>
 											)}
 											{j === foodCategory.items.length - 1 && (

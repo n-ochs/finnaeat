@@ -9,6 +9,13 @@ export type ISocialLinksData = {
 	tiktok: string;
 };
 
+export type IMenuCardProps = {
+	imgSrc?: string;
+	itemTitle: string;
+	itemDescription: string;
+	itemPrice?: string;
+};
+
 export type IPlaceholderFoodMenuData = {
 	title: string;
 	items: { name: string; description: string; price: string }[];
@@ -16,5 +23,12 @@ export type IPlaceholderFoodMenuData = {
 
 export type IPreparedFoodMenuData = {
 	category: string;
-	items: { name: string; description: string; price: string; order: number; img_url: string }[];
+	items: { name: string; description: string; price: string; imgUrl: string }[];
 }[];
+
+export type INewMenuItem = {
+	name: string;
+	description: string;
+	price: string;
+	imgUrl: string;
+};

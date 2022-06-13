@@ -13,15 +13,29 @@ interface IEditableMenuCardProps extends IMenuCardProps {
 	itemIndex: number;
 	categoryIndex: number;
 	menuData: IPreparedFoodMenuData;
+	disabled: boolean;
+	handleDelete: (i: number, menuItemIndex: number) => void;
+	setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({ itemTitle, itemDescription, itemPrice, itemIndex, categoryIndex, menuData }) => {
+const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
+	itemTitle,
+	itemDescription,
+	itemPrice,
+	itemIndex,
+	categoryIndex,
+	menuData,
+	disabled,
+	handleDelete,
+	setDisabled
+}) => {
 	const [isEditable, setIsEditable] = useState<boolean>(false);
 	const [newItemTitle, setNewItemTitle] = useState<string>(itemTitle);
 	const [newItemDescription, setNewItemDescription] = useState<string>(itemDescription);
 	const [newItemPrice, setNewItemPrice] = useState<string>(itemPrice);
 	const [updatedItem, setUpdatedItem] = useState<{ name: string; description: string; price: string; imgUrl: string }>();
 	const [updatedMenu, setUpdatedMenu] = useState<IPreparedFoodMenuData>(menuData);
+	const [isReadyForDelete, setIsReadyForDelete] = useState<boolean>(false);
 
 	const handleCancel: () => void = () => {
 		setIsEditable(false);
@@ -76,6 +90,12 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({ itemTitle, itemDes
 		setUpdatedMenu(menuData);
 	}, [menuData]);
 
+	useEffect(() => {
+		if (isEditable) {
+			setDisabled(true);
+		} else setDisabled(false);
+	}, [isEditable]);
+
 	return (
 		<div className='relative w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 			{isEditable ? (
@@ -85,6 +105,8 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({ itemTitle, itemDes
 							<span className='m-auto flex items-center font-bold text-gray-700'>
 								<FaRegImage size='18px' />
 								<p className='my-0 ml-2'> Select a new image</p>
+								{/* <label htmlFor='input'>Upload Img</label>
+								<input type='file' /> */}
 							</span>
 						</div>
 					</div>
@@ -121,10 +143,37 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({ itemTitle, itemDes
 						</div>
 					</div>
 				</>
+			) : isReadyForDelete ? (
+				<div className='container flex h-full flex-col'>
+					<div className='m-auto flex flex-col space-y-6'>
+						<p className='text-center text-gray-600'>
+							Are you sure you want to delete:
+							<br />
+							<strong>{itemTitle}</strong>
+						</p>
+						<div className='mx-auto space-x-4'>
+							<button className='btn-outlined rounded-3xl normal-case' onClick={() => setIsReadyForDelete(false)}>
+								Cancel
+							</button>
+							<button className='btn-primary rounded-3xl normal-case' onClick={() => handleDelete(categoryIndex, itemIndex)}>
+								Delete
+							</button>
+						</div>
+					</div>
+				</div>
 			) : (
 				<>
-					<AiOutlineMinusCircle color='red' size='24px' className='absolute top-[-10px] left-[-10px] z-30 cursor-pointer bg-white' />
-					<FaEdit className='absolute top-[-7px] right-[-10px] z-30 cursor-pointer bg-white' size='24px' onClick={() => setIsEditable(true)} />
+					<AiOutlineMinusCircle
+						color='red'
+						size='24px'
+						className={disabled ? 'hidden' : 'absolute top-[-10px] left-[-10px] z-30 cursor-pointer bg-white'}
+						onClick={() => setIsReadyForDelete(true)}
+					/>
+					<FaEdit
+						className={disabled ? 'hidden' : 'absolute top-[-7px] right-[-10px] z-30 cursor-pointer bg-white'}
+						size='24px'
+						onClick={() => setIsEditable(true)}
+					/>
 					<div className='mx-auto rounded-xl object-cover'>
 						<Image src='/imgs/food-image.jpeg' className='rounded-xl' width='288px' height='192px' />
 					</div>

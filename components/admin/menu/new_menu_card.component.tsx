@@ -6,11 +6,12 @@ import ImageUploader from '@components/admin/menu/image_uploader.component';
 
 interface INewMenuCardProps {
 	index: number;
+	foodCategory: string;
 	handleCancel: (i: number) => void;
 	handleSave: (i: number, newMenuItem: INewMenuItem) => void;
 }
 
-const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, handleCancel, handleSave }) => {
+const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, foodCategory, handleCancel, handleSave }) => {
 	const [newItemTitle, setNewItemTitle] = useState<string>('');
 	const [newItemDescription, setNewItemDescription] = useState<string>('');
 	const [newItemPrice, setNewItemPrice] = useState<string>('');
@@ -62,10 +63,10 @@ const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, handleCancel, handleS
 						className='mt-0 w-full rounded-md border-1 border-solid border-gray-400 px-2 py-1 text-sm'
 					/>
 					<div className='flex items-center space-x-4'>
-						<button className='btn-outlined rounded-3xl normal-case' onClick={handleItemCancel}>
+						<button className='btn-outlined rounded-3xl normal-case' disabled={foodCategory === 'New Category'} onClick={handleItemCancel}>
 							Cancel
 						</button>
-						<button className='btn-primary rounded-3xl normal-case' onClick={() => handleSave(index, newMenuItem)}>
+						<button className='btn-primary rounded-3xl normal-case' disabled={foodCategory === 'New Category'} onClick={() => handleSave(index, newMenuItem)}>
 							Save
 						</button>
 					</div>

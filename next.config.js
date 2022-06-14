@@ -8,7 +8,7 @@ module.exports = {
 		ignoreDuringBuilds: true
 	},
 	images: {
-		domains: ['firebasestorage.googleapis.com'],
+		domains: ['firebasestorage.googleapis.com', 'https://firebasestorage.googleapis.com'],
 		formats: ['image/webp']
 	}
 };

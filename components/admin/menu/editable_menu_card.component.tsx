@@ -16,6 +16,7 @@ interface IEditableMenuCardProps extends IMenuCardProps {
 	categoryIndex: number;
 	menuData: IPreparedFoodMenuData;
 	disabled: boolean;
+	oneRemaining: boolean;
 	handleDelete: (i: number, menuItemIndex: number) => void;
 	setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -29,6 +30,7 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	categoryIndex,
 	menuData,
 	disabled,
+	oneRemaining,
 	handleDelete,
 	setDisabled
 }) => {
@@ -159,14 +161,16 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 				</div>
 			) : (
 				<>
-					<AiOutlineMinusCircle
-						color='red'
-						size='24px'
-						className={disabled ? 'hidden' : 'absolute top-[-10px] left-[-10px] z-30 cursor-pointer bg-white'}
-						onClick={() => setIsReadyForDelete(true)}
-					/>
+					{!oneRemaining && (
+						<AiOutlineMinusCircle
+							color='red'
+							size='24px'
+							className={disabled ? 'hidden' : 'absolute top-[-10px] left-[-10px] z-30 cursor-pointer rounded-md bg-white'}
+							onClick={() => setIsReadyForDelete(true)}
+						/>
+					)}
 					<FaEdit
-						className={disabled ? 'hidden' : 'absolute top-[-7px] right-[-10px] z-30 cursor-pointer bg-white'}
+						className={disabled ? 'hidden' : 'absolute top-[-7px] right-[-10px] z-30 cursor-pointer rounded-md bg-white'}
 						size='24px'
 						onClick={() => setIsEditable(true)}
 					/>

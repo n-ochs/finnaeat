@@ -28,7 +28,7 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				item.items.push({ name: '', description: '', price: '', imgUrl: '' });
+				item.items.push({ name: '', description: '', price: '', imgUrl: '', isNewInd: true });
 				return item;
 			}
 		});
@@ -41,7 +41,8 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				item.items.pop();
+				const removeIsNewInd: { name: string; description: string; price: string; imgUrl: string }[] = item.items.filter((e) => !e.isNewInd);
+				item.items = removeIsNewInd;
 				return item;
 			}
 		});
@@ -59,8 +60,10 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				item.items.pop();
-				item.items.push(newMenuItem);
+				let removeIsNewInd: { name: string; description: string; price: string; imgUrl: string }[] = item.items.filter((e) => !e.isNewInd);
+				delete newMenuItem.isNewInd;
+				removeIsNewInd.push(newMenuItem);
+				item.items = removeIsNewInd;
 				return item;
 			}
 		});
@@ -107,7 +110,7 @@ const EditableMenu: React.FC = () => {
 			let errors: string[] = [];
 			for (let i: number = 0; i < menuData?.length; i++) {
 				if (menuData[i].items[menuData[i].items.length - 1].name === '' && menuData[i].items[menuData[i].items.length - 1].description === '') {
-					errors.push('x');
+					errors.push('.');
 				}
 			}
 
@@ -148,7 +151,7 @@ const EditableMenu: React.FC = () => {
 									const categoryIndex: number = menuData?.indexOf(foodCategory);
 									return (
 										<React.Fragment key={`menu_${j}`}>
-											{item.name === '' && item.description === '' && item.price === '' ? (
+											{item.isNewInd ? (
 												<NewMenuCard index={i} handleCancel={handleCancel} handleSave={handleSave} />
 											) : (
 												<EditableMenuCard
@@ -156,6 +159,7 @@ const EditableMenu: React.FC = () => {
 													itemTitle={item.name}
 													itemDescription={item.description}
 													itemPrice={item.price}
+													imgSrc={item.imgUrl}
 													itemIndex={j}
 													categoryIndex={categoryIndex}
 													menuData={menuData}

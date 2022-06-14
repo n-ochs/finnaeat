@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+import ImageUploader from '@components/admin/menu/image_uploader.component';
+
 import { IMenuCardProps, IPreparedFoodMenuData } from '@lib/types';
 import { foodMenuRef } from '@lib/firebase.config';
 
 import toast from 'react-hot-toast';
 import { AiOutlineMinusCircle } from 'react-icons/ai';
-import { FaEdit, FaRegImage } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
 import { updateDoc } from 'firebase/firestore';
 
 interface IEditableMenuCardProps extends IMenuCardProps {
@@ -22,6 +24,7 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	itemTitle,
 	itemDescription,
 	itemPrice,
+	imgSrc,
 	itemIndex,
 	categoryIndex,
 	menuData,
@@ -30,9 +33,10 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	setDisabled
 }) => {
 	const [isEditable, setIsEditable] = useState<boolean>(false);
-	const [newItemTitle, setNewItemTitle] = useState<string>(itemTitle);
-	const [newItemDescription, setNewItemDescription] = useState<string>(itemDescription);
-	const [newItemPrice, setNewItemPrice] = useState<string>(itemPrice);
+	const [updatedItemTitle, setUpdatedItemTitle] = useState<string>(itemTitle);
+	const [updatedItemDescription, setUpdatedItemDescription] = useState<string>(itemDescription);
+	const [updatedItemPrice, setUpdatedItemPrice] = useState<string>(itemPrice);
+	const [updatedItemImgUrl, setUpdatedItemImgUrl] = useState<string>(imgSrc);
 	const [updatedItem, setUpdatedItem] = useState<{ name: string; description: string; price: string; imgUrl: string }>();
 	const [updatedMenu, setUpdatedMenu] = useState<IPreparedFoodMenuData>(menuData);
 	const [isReadyForDelete, setIsReadyForDelete] = useState<boolean>(false);
@@ -55,11 +59,12 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	useEffect(() => {
 		setUpdatedItem({
 			...updatedItem,
-			name: newItemTitle,
-			description: newItemDescription,
-			price: newItemPrice
+			name: updatedItemTitle,
+			description: updatedItemDescription,
+			price: updatedItemPrice,
+			imgUrl: updatedItemImgUrl
 		});
-	}, [newItemTitle, newItemDescription, newItemPrice]);
+	}, [updatedItemTitle, updatedItemDescription, updatedItemPrice, updatedItemImgUrl]);
 
 	useEffect(() => {
 		if (updatedItem) {
@@ -100,21 +105,12 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 		<div className='relative w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 			{isEditable ? (
 				<>
-					<div className='flex'>
-						<div className='mx-auto flex h-[192px] w-[288px] rounded-xl bg-gray-400'>
-							<span className='m-auto flex items-center font-bold text-gray-700'>
-								<FaRegImage size='18px' />
-								<p className='my-0 ml-2'> Select a new image</p>
-								{/* <label htmlFor='input'>Upload Img</label>
-								<input type='file' /> */}
-							</span>
-						</div>
-					</div>
+					<ImageUploader isNewItem={false} setUpdatedItemImgUrl={setUpdatedItemImgUrl} />
 					<div className='space-y-2 p-2'>
 						<input
 							type='text'
-							value={newItemTitle}
-							onChange={(e) => setNewItemTitle(e.target.value)}
+							value={updatedItemTitle}
+							onChange={(e) => setUpdatedItemTitle(e.target.value)}
 							placeholder={itemTitle}
 							className='w-full rounded-md border-1 border-solid border-gray-400 px-2 py-1'
 						/>
@@ -123,13 +119,13 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 							rows={4}
 							cols={50}
 							placeholder={itemDescription}
-							value={newItemDescription}
-							onChange={(e) => setNewItemDescription(e.target.value)}
+							value={updatedItemDescription}
+							onChange={(e) => setUpdatedItemDescription(e.target.value)}
 						/>
 						<input
 							type='text'
-							value={newItemPrice}
-							onChange={(e) => setNewItemPrice(e.target.value)}
+							value={updatedItemPrice}
+							onChange={(e) => setUpdatedItemPrice(e.target.value)}
 							placeholder={itemPrice ? itemPrice : 'Item Price (optional)'}
 							className='mt-0 w-full rounded-md border-1 border-solid border-gray-400 px-2 py-1 text-sm'
 						/>
@@ -175,7 +171,7 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 						onClick={() => setIsEditable(true)}
 					/>
 					<div className='mx-auto rounded-xl object-cover'>
-						<Image src='/imgs/food-image.jpeg' className='rounded-xl' width='288px' height='192px' />
+						<Image src={imgSrc === '' || imgSrc === null ? '/imgs/food-image.jpeg' : imgSrc} className='rounded-xl' width='288px' height='216px' />
 					</div>
 					<div className='p-2'>
 						<h2 className='mb-2 text-lg font-bold'>{itemTitle}</h2>

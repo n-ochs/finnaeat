@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { INewMenuItem } from '@lib/types';
 
-import { FaRegImage } from 'react-icons/fa';
+import ImageUploader from '@components/admin/menu/image_uploader.component';
 
 interface INewMenuCardProps {
 	index: number;
@@ -14,12 +14,14 @@ const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, handleCancel, handleS
 	const [newItemTitle, setNewItemTitle] = useState<string>('');
 	const [newItemDescription, setNewItemDescription] = useState<string>('');
 	const [newItemPrice, setNewItemPrice] = useState<string>('');
+	const [newItemImgUrl, setNewItemImgUrl] = useState<string>('');
 	const [newMenuItem, setNewMenuItem] = useState<INewMenuItem>();
 
 	const handleItemCancel: () => void = () => {
 		setNewItemTitle('');
 		setNewItemDescription('');
 		setNewItemPrice('');
+		setNewItemImgUrl('');
 		handleCancel(index);
 	};
 
@@ -28,19 +30,14 @@ const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, handleCancel, handleS
 			name: newItemTitle,
 			description: newItemDescription,
 			price: newItemPrice,
-			imgUrl: ''
+			imgUrl: newItemImgUrl
 		});
-	}, [newItemTitle, newItemDescription, newItemPrice]);
+	}, [newItemTitle, newItemDescription, newItemPrice, newItemImgUrl]);
 
 	return (
 		<div className='relative w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 			<div className='flex flex-col'>
-				<div className='mx-auto flex h-[192px] w-full rounded-xl bg-gray-400'>
-					<span className='m-auto flex items-center font-bold text-gray-700'>
-						<FaRegImage size='18px' />
-						<p className='my-0 ml-2'> Select a new image</p>
-					</span>
-				</div>
+				<ImageUploader isNewItem setNewItemImgUrl={setNewItemImgUrl} />
 				<div className='space-y-2 p-2'>
 					<input
 						type='text'

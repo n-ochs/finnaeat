@@ -21,7 +21,7 @@ const EditableMenu: React.FC = () => {
 
 	const handleAdd: (i: number) => void = (i: number) => {
 		if (disabled) {
-			toast.error('Please finish with new item before adding another.');
+			toast.error('Please finish with open task before starting another.');
 			return;
 		}
 		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
@@ -51,8 +51,8 @@ const EditableMenu: React.FC = () => {
 	};
 
 	const handleSave: (i: number, newMenuItem: INewMenuItem) => void = (i: number, newMenuItem: INewMenuItem) => {
-		if (newMenuItem.name.length === 0 && newMenuItem.description.length === 0) {
-			toast.error('You must fill out at least name and description');
+		if (newMenuItem.name.length === 0 || newMenuItem.description.length === 0 || newMenuItem.imgUrl.length === 0) {
+			toast.error('Please fill out all fields.');
 			return;
 		}
 
@@ -98,6 +98,57 @@ const EditableMenu: React.FC = () => {
 			});
 	};
 
+	const handleAddCategory: () => void = () => {
+		if (disabled) {
+			toast.error('Please finish with open task before starting another.');
+			return;
+		}
+		const newMenuData: IPreparedFoodMenuData = menuData.map((item) => {
+			return item;
+		});
+
+		newMenuData.push({ category: 'New Category', items: [{ name: '', description: '', imgUrl: '', price: '', isNewInd: true }] });
+
+		setMenuData(newMenuData);
+	};
+
+	const handleEditCategory: (categoryIndex: number, updatedCategoryTitle: string) => void = (categoryIndex: number, updatedCategoryTitle: string) => {
+		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
+			if (categoryIndex !== index) {
+				return item;
+			} else {
+				item.category = updatedCategoryTitle;
+				return item;
+			}
+		});
+
+		updateDoc(foodMenuRef, 'food', newMenuData)
+			.then(() => {
+				toast.success('Changed category title');
+				setMenuData(newMenuData);
+			})
+			.catch(() => {
+				toast.error('Error updating category. Please try again.');
+			});
+	};
+
+	const handleDeleteCategory: (index: number) => void = (index: number) => {
+		const newMenuData: IPreparedFoodMenuData = menuData.map((item) => {
+			return item;
+		});
+
+		newMenuData.splice(index, 1);
+
+		updateDoc(foodMenuRef, 'food', newMenuData)
+			.then(() => {
+				toast.success('Deleted Menu Category');
+				setMenuData(newMenuData);
+			})
+			.catch(() => {
+				toast.error('Error deleting Menu Category. Please try again.');
+			});
+	};
+
 	const [value, loading, error] = useDocument(foodMenuRef);
 
 	useEffect(() => {
@@ -109,7 +160,11 @@ const EditableMenu: React.FC = () => {
 		if (menuData) {
 			let errors: string[] = [];
 			for (let i: number = 0; i < menuData?.length; i++) {
-				if (menuData[i].items[menuData[i].items.length - 1].name === '' && menuData[i].items[menuData[i].items.length - 1].description === '') {
+				if (
+					menuData[i].items.length > 0 &&
+					menuData[i].items[menuData[i].items.length - 1].name === '' &&
+					menuData[i].items[menuData[i].items.length - 1].description === ''
+				) {
 					errors.push('.');
 				}
 			}
@@ -123,7 +178,7 @@ const EditableMenu: React.FC = () => {
 	}, [menuData]);
 
 	return (
-		<div className='space-y-8'>
+		<div className='space-y-24'>
 			<h2 className='text-center text-2xl underline'>Menu</h2>
 
 			{loading ? (
@@ -144,15 +199,17 @@ const EditableMenu: React.FC = () => {
 			) : (
 				menuData?.map((foodCategory, i) => {
 					return (
-						<div key={`menu_category_${i}`}>
-							<Divider>{foodCategory.category}</Divider>
+						<div key={`menu_category_${i}`} className='space-y-8'>
+							<Divider editable handleEditCategory={handleEditCategory} index={i}>
+								{foodCategory.category}
+							</Divider>
 							<div className='flex flex-wrap justify-center gap-8'>
 								{foodCategory.items.map((item, j) => {
-									const categoryIndex: number = menuData?.indexOf(foodCategory);
+									const oneRemaining: boolean = foodCategory.items.length === 1 ? true : false;
 									return (
 										<React.Fragment key={`menu_${j}`}>
 											{item.isNewInd ? (
-												<NewMenuCard index={i} handleCancel={handleCancel} handleSave={handleSave} />
+												<NewMenuCard index={i} foodCategory={foodCategory.category} handleCancel={handleCancel} handleSave={handleSave} />
 											) : (
 												<EditableMenuCard
 													key={`menu_item_${j}`}
@@ -161,14 +218,15 @@ const EditableMenu: React.FC = () => {
 													itemPrice={item.price}
 													imgSrc={item.imgUrl}
 													itemIndex={j}
-													categoryIndex={categoryIndex}
+													categoryIndex={i}
 													menuData={menuData}
 													disabled={disabled}
+													oneRemaining={oneRemaining}
 													handleDelete={handleDelete}
 													setDisabled={setDisabled}
 												/>
 											)}
-											{j === foodCategory.items.length - 1 && (
+											{(j === foodCategory.items.length - 1 || foodCategory.category === 'New Category') && (
 												<div className='flex min-h-[250px] w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 													<div className='m-auto flex h-full w-full items-center justify-center rounded-xl bg-gray-300'>
 														<FaPlusCircle size='28px' color='green' className='cursor-pointer' onClick={() => handleAdd(i)} />
@@ -179,10 +237,20 @@ const EditableMenu: React.FC = () => {
 									);
 								})}
 							</div>
+							<div className='flex items-center justify-center'>
+								<button disabled={disabled} className='btn-primary rounded-3xl normal-case' onClick={() => handleDeleteCategory(i)}>
+									Delete Category
+								</button>
+							</div>
 						</div>
 					);
 				})
 			)}
+			<div className='flex items-center justify-center'>
+				<button className='btn-primary rounded-3xl normal-case' onClick={handleAddCategory}>
+					New Category
+				</button>
+			</div>
 		</div>
 	);
 };

@@ -1,7 +1,7 @@
-/******************** IMPLEMENT FIREBASE RULES BEFORE PROD ********************/
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
 import { DocumentData, DocumentReference, Firestore, doc, getFirestore } from 'firebase/firestore';
+import { FirebaseStorage, getStorage } from 'firebase/storage';
 
 type FirebaseConfigType = {
 	apiKey: string;
@@ -29,6 +29,9 @@ export const db: Firestore = getFirestore(firebaseApp);
 
 // Initializing Firebase Auth
 export const auth: Auth = getAuth();
+
+// Initializing Firebase Storage
+export const storage: FirebaseStorage = getStorage(firebaseApp);
 
 // Food Menu Ref
 export const foodMenuRef: DocumentReference<DocumentData> = doc(db, 'menu', 'z6Lx7enScX1qtiNo7jDe');

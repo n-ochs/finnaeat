@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
 	return (
 		<nav className='relative mx-auto bg-primaryRed px-4 py-6 lg:px-12'>
 			<div className='flex items-center justify-between'>
-				<h1 className='text-3xl font-medium uppercase text-white md:text-xl'>Finna-Eat</h1>
+				<h1 className='text-xl font-medium uppercase text-white lg:text-2xl'>Finna-Eat</h1>
 				<div className='hidden md:flex md:space-x-4 lg:space-x-12'>
 					{menuItems.map((item, index) => {
 						return (

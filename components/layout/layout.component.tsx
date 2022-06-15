@@ -8,14 +8,15 @@ import Navbar from '@components/layout/navbar.component';
 interface ILayoutProps {
 	disableHero?: boolean;
 	disableFooter?: boolean;
+	title?: string;
 	children?: React.ReactNode;
 }
 
-const Layout: React.FC<ILayoutProps> = ({ disableHero, disableFooter, children }) => {
+const Layout: React.FC<ILayoutProps> = ({ disableHero, disableFooter, title, children }) => {
 	return (
-		<div className='overflow-x-hidden'>
+		<div className='h-screen overflow-x-hidden'>
 			<Head>
-				<title>Finna-Eat</title>
+				<title>{title ? title : 'Finna-Eat'}</title>
 			</Head>
 			<Navbar />
 			{!disableHero && <Hero />}

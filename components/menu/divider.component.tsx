@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AiOutlineMinusCircle } from 'react-icons/ai';
 import { BsCheckCircleFill } from 'react-icons/bs';
+import { FcCancel } from 'react-icons/fc';
 
 import { FaEdit } from 'react-icons/fa';
 
@@ -40,10 +40,10 @@ const Divider: React.FC<IDividerProps> = ({ children, editable, index, handleEdi
 									setEditCategory(false);
 								}}
 							/>
-							<AiOutlineMinusCircle
+							<FcCancel
 								color='red'
-								size='24px'
-								className='absolute top-[-10px] left-[-2px] z-30 cursor-pointer bg-white'
+								size='28px'
+								className='absolute top-[-8px] left-[-2px] z-30 cursor-pointer bg-white'
 								onClick={() => setEditCategory(false)}
 							/>
 						</>

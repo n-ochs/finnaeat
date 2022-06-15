@@ -10,10 +10,11 @@ export type ISocialLinksData = {
 };
 
 export type IMenuCardProps = {
-	imgSrc?: string;
 	itemTitle: string;
 	itemDescription: string;
 	itemPrice?: string;
+	imgSrc?: string;
+	imgPath?: string;
 };
 
 export type IPlaceholderFoodMenuData = {
@@ -23,7 +24,7 @@ export type IPlaceholderFoodMenuData = {
 
 export type IPreparedFoodMenuData = {
 	category: string;
-	items: { name: string; description: string; price: string; imgUrl: string; isNewInd?: boolean }[];
+	items: { name: string; description: string; price: string; imgUrl: string; imgPath: string; isNewInd?: boolean }[];
 }[];
 
 export type INewMenuItem = {
@@ -31,5 +32,6 @@ export type INewMenuItem = {
 	description: string;
 	price: string;
 	imgUrl: string;
+	imgPath: string;
 	isNewInd?: boolean;
 };

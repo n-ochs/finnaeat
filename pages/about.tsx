@@ -3,7 +3,7 @@ import Layout from '@components/layout/layout.component';
 
 const About: NextPage = () => {
 	return (
-		<Layout>
+		<Layout title='About - Finna-Eat'>
 			<div className='p-8'>about page</div>
 		</Layout>
 	);

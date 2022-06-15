@@ -6,10 +6,12 @@ import { FaRegImage } from 'react-icons/fa';
 interface IImageUploaderProps {
 	isNewItem: boolean;
 	setNewItemImgUrl?: React.Dispatch<React.SetStateAction<string>>;
+	setNewItemImgPath?: React.Dispatch<React.SetStateAction<string>>;
 	setUpdatedItemImgUrl?: React.Dispatch<React.SetStateAction<string>>;
+	setUpdatedItemImgPath?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ImageUploader: React.FC<IImageUploaderProps> = ({ isNewItem, setNewItemImgUrl, setUpdatedItemImgUrl }) => {
+const ImageUploader: React.FC<IImageUploaderProps> = ({ isNewItem, setNewItemImgUrl, setNewItemImgPath, setUpdatedItemImgUrl, setUpdatedItemImgPath }) => {
 	const hiddenFileInput: React.MutableRefObject<HTMLInputElement> = useRef();
 	const [uploading, setUploading] = useState<boolean>(false);
 	const [progress, setProgress] = useState<number>(0);
@@ -26,7 +28,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ isNewItem, setNewItemImg
 		const extension: string = file.type.split('/')[1];
 
 		// Makes reference to the storage bucket location
-		const fileRef: StorageReference = ref(storage, `uploads/${Date.now()}.${extension}`);
+		const fileName: string = `uploads/${Date.now()}.${extension}`;
+		const fileRef: StorageReference = ref(storage, fileName);
 		setUploading(true);
 
 		// Starts the upload
@@ -43,8 +46,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ isNewItem, setNewItemImg
 			setUploadComplete(true);
 			if (isNewItem) {
 				setNewItemImgUrl(url);
+				setNewItemImgPath(fileName);
 			} else {
 				setUpdatedItemImgUrl(url);
+				setUpdatedItemImgPath(fileName);
 			}
 			setUploading(false);
 		});

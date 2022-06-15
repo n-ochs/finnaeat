@@ -26,6 +26,7 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	itemDescription,
 	itemPrice,
 	imgSrc,
+	imgPath,
 	itemIndex,
 	categoryIndex,
 	menuData,
@@ -39,7 +40,8 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 	const [updatedItemDescription, setUpdatedItemDescription] = useState<string>(itemDescription);
 	const [updatedItemPrice, setUpdatedItemPrice] = useState<string>(itemPrice);
 	const [updatedItemImgUrl, setUpdatedItemImgUrl] = useState<string>(imgSrc);
-	const [updatedItem, setUpdatedItem] = useState<{ name: string; description: string; price: string; imgUrl: string }>();
+	const [updatedItemImgPath, setUpdatedItemImgPath] = useState<string>(imgPath);
+	const [updatedItem, setUpdatedItem] = useState<{ name: string; description: string; price: string; imgUrl: string; imgPath: string }>();
 	const [updatedMenu, setUpdatedMenu] = useState<IPreparedFoodMenuData>(menuData);
 	const [isReadyForDelete, setIsReadyForDelete] = useState<boolean>(false);
 
@@ -64,19 +66,22 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 			name: updatedItemTitle,
 			description: updatedItemDescription,
 			price: updatedItemPrice,
-			imgUrl: updatedItemImgUrl
+			imgUrl: updatedItemImgUrl,
+			imgPath: updatedItemImgPath
 		});
-	}, [updatedItemTitle, updatedItemDescription, updatedItemPrice, updatedItemImgUrl]);
+	}, [updatedItemTitle, updatedItemDescription, updatedItemPrice, updatedItemImgUrl, updatedItemImgPath]);
 
 	useEffect(() => {
 		if (updatedItem) {
-			const updatedItems: { name: string; description: string; price: string; imgUrl: string }[] = updatedMenu[categoryIndex].items.map((foodItem, index) => {
-				if (itemIndex !== index) {
-					return foodItem;
-				} else {
-					return updatedItem;
+			const updatedItems: { name: string; description: string; price: string; imgUrl: string; imgPath: string }[] = updatedMenu[categoryIndex].items.map(
+				(foodItem, index) => {
+					if (itemIndex !== index) {
+						return foodItem;
+					} else {
+						return updatedItem;
+					}
 				}
-			});
+			);
 
 			const updatedState: IPreparedFoodMenuData = updatedMenu.map((category, index) => {
 				if (index !== categoryIndex) {
@@ -107,7 +112,7 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 		<div className='relative w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 			{isEditable ? (
 				<>
-					<ImageUploader isNewItem={false} setUpdatedItemImgUrl={setUpdatedItemImgUrl} />
+					<ImageUploader isNewItem={false} setUpdatedItemImgUrl={setUpdatedItemImgUrl} setUpdatedItemImgPath={setUpdatedItemImgPath} />
 					<div className='space-y-2 p-2'>
 						<input
 							type='text'

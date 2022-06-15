@@ -16,10 +16,10 @@ const Navbar: React.FC = () => {
 	];
 
 	return (
-		<nav className='relative mx-auto bg-primaryRed px-4 py-6 lg:px-16'>
+		<nav className='relative mx-auto bg-primaryRed px-4 py-6 lg:px-12'>
 			<div className='flex items-center justify-between'>
-				<h1 className='text-xl font-medium uppercase text-white'>Finna-Eat</h1>
-				<div className='hidden md:flex md:space-x-8 lg:space-x-12'>
+				<h1 className='text-xl font-medium uppercase text-white lg:text-2xl'>Finna-Eat</h1>
+				<div className='hidden md:flex md:space-x-4 lg:space-x-12'>
 					{menuItems.map((item, index) => {
 						return (
 							<Link href={item.route} key={`menu_item_${index}`}>

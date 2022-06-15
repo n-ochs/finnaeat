@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import DeleteModal from '@components/admin/menu/delete_modal.component';
 import Divider from '@components/menu/divider.component';
 import DividerLoader from '@components/menu/divider_loader.component';
 import EditableMenuCard from '@components/admin/menu/editable_menu_card.component';
@@ -8,16 +9,19 @@ import NewMenuCard from '@components/admin/menu/new_menu_card.component';
 
 import PlaceholderMenuData from '@lib/data/placeholder_menu_data';
 import { INewMenuItem, IPreparedFoodMenuData } from '@lib/types';
-import { foodMenuRef } from '@lib/firebase.config';
+import { foodMenuRef, storage } from '@lib/firebase.config';
 
 import toast from 'react-hot-toast';
 import { FaPlusCircle } from 'react-icons/fa';
 import { updateDoc } from 'firebase/firestore';
 import { useDocument } from 'react-firebase-hooks/firestore';
+import { StorageReference, deleteObject, ref } from 'firebase/storage';
 
 const EditableMenu: React.FC = () => {
 	const [menuData, setMenuData] = useState<IPreparedFoodMenuData>();
 	const [disabled, setDisabled] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [categoryToDelete, setCategoryToDelete] = useState<number>(null);
 
 	const handleAdd: (i: number) => void = (i: number) => {
 		if (disabled) {
@@ -28,7 +32,7 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				item.items.push({ name: '', description: '', price: '', imgUrl: '', isNewInd: true });
+				item.items.push({ name: '', description: '', price: '', imgUrl: '', imgPath: '', isNewInd: true });
 				return item;
 			}
 		});
@@ -41,7 +45,7 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				const removeIsNewInd: { name: string; description: string; price: string; imgUrl: string }[] = item.items.filter((e) => !e.isNewInd);
+				const removeIsNewInd: { name: string; description: string; price: string; imgUrl: string; imgPath: string }[] = item.items.filter((e) => !e.isNewInd);
 				item.items = removeIsNewInd;
 				return item;
 			}
@@ -60,7 +64,7 @@ const EditableMenu: React.FC = () => {
 			if (i !== index) {
 				return item;
 			} else {
-				let removeIsNewInd: { name: string; description: string; price: string; imgUrl: string }[] = item.items.filter((e) => !e.isNewInd);
+				let removeIsNewInd: { name: string; description: string; price: string; imgUrl: string; imgPath: string }[] = item.items.filter((e) => !e.isNewInd);
 				delete newMenuItem.isNewInd;
 				removeIsNewInd.push(newMenuItem);
 				item.items = removeIsNewInd;
@@ -79,6 +83,15 @@ const EditableMenu: React.FC = () => {
 	};
 
 	const handleDelete: (i: number, menuItemIndex: number) => void = (i: number, menuItemIndex: number) => {
+		const imgRef: StorageReference = ref(storage, menuData[i].items[menuItemIndex].imgPath);
+		deleteObject(imgRef)
+			.then(() => {
+				toast.success('Deleted item image from storage');
+			})
+			.catch(() => {
+				toast.error('Error deleting item from storage.');
+			});
+
 		const newMenuData: IPreparedFoodMenuData = menuData.map((item, index) => {
 			if (i !== index) {
 				return item;
@@ -107,7 +120,7 @@ const EditableMenu: React.FC = () => {
 			return item;
 		});
 
-		newMenuData.push({ category: 'New Category', items: [{ name: '', description: '', imgUrl: '', price: '', isNewInd: true }] });
+		newMenuData.push({ category: 'New Category', items: [{ name: '', description: '', imgUrl: '', price: '', imgPath: '', isNewInd: true }] });
 
 		setMenuData(newMenuData);
 	};
@@ -137,6 +150,21 @@ const EditableMenu: React.FC = () => {
 			return item;
 		});
 
+		let imgPaths: { imgPath: string; itemName: string }[] = [];
+
+		newMenuData[index].items.forEach((item) => imgPaths.push({ imgPath: item.imgPath, itemName: item.name }));
+
+		imgPaths.forEach((img) => {
+			const imgRef: StorageReference = ref(storage, img.imgPath);
+			deleteObject(imgRef)
+				.then(() => {
+					toast.success(`Deleted ${img.itemName} image from storage`);
+				})
+				.catch(() => {
+					toast.error(`Error deleting ${img.itemName} image from storage`);
+				});
+		});
+
 		newMenuData.splice(index, 1);
 
 		updateDoc(foodMenuRef, 'food', newMenuData)
@@ -147,6 +175,9 @@ const EditableMenu: React.FC = () => {
 			.catch(() => {
 				toast.error('Error deleting Menu Category. Please try again.');
 			});
+
+		setCategoryToDelete(null);
+		setIsModalOpen(false);
 	};
 
 	const [value, loading, error] = useDocument(foodMenuRef);
@@ -178,80 +209,91 @@ const EditableMenu: React.FC = () => {
 	}, [menuData]);
 
 	return (
-		<div className='space-y-24'>
-			<h2 className='text-center text-2xl underline'>Menu</h2>
+		<>
+			{isModalOpen && <DeleteModal categoryToDelete={categoryToDelete} cancelFn={setIsModalOpen} confirmFn={handleDeleteCategory} />}
+			<div className='space-y-24'>
+				<h2 className='text-center text-2xl underline'>Menu</h2>
 
-			{loading ? (
-				PlaceholderMenuData.food.map((placeholderCategory, i) => {
-					return (
-						<div key={`menu_category_loader_${i}`}>
-							<DividerLoader />
-							<div className='flex flex-wrap justify-center gap-4'>
-								{placeholderCategory.items.map((_, j) => {
-									return <MenuLoaderCard key={`menu_item_loader_${j}`} />;
-								})}
+				{loading ? (
+					PlaceholderMenuData.food.map((placeholderCategory, i) => {
+						return (
+							<div key={`menu_category_loader_${i}`}>
+								<DividerLoader />
+								<div className='flex flex-wrap justify-center gap-4'>
+									{placeholderCategory.items.map((_, j) => {
+										return <MenuLoaderCard key={`menu_item_loader_${j}`} />;
+									})}
+								</div>
 							</div>
-						</div>
-					);
-				})
-			) : error ? (
-				<div>Error</div>
-			) : (
-				menuData?.map((foodCategory, i) => {
-					return (
-						<div key={`menu_category_${i}`} className='space-y-8'>
-							<Divider editable handleEditCategory={handleEditCategory} index={i}>
-								{foodCategory.category}
-							</Divider>
-							<div className='flex flex-wrap justify-center gap-8'>
-								{foodCategory.items.map((item, j) => {
-									const oneRemaining: boolean = foodCategory.items.length === 1 ? true : false;
-									return (
-										<React.Fragment key={`menu_${j}`}>
-											{item.isNewInd ? (
-												<NewMenuCard index={i} foodCategory={foodCategory.category} handleCancel={handleCancel} handleSave={handleSave} />
-											) : (
-												<EditableMenuCard
-													key={`menu_item_${j}`}
-													itemTitle={item.name}
-													itemDescription={item.description}
-													itemPrice={item.price}
-													imgSrc={item.imgUrl}
-													itemIndex={j}
-													categoryIndex={i}
-													menuData={menuData}
-													disabled={disabled}
-													oneRemaining={oneRemaining}
-													handleDelete={handleDelete}
-													setDisabled={setDisabled}
-												/>
-											)}
-											{(j === foodCategory.items.length - 1 || foodCategory.category === 'New Category') && (
-												<div className='flex min-h-[250px] w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
-													<div className='m-auto flex h-full w-full items-center justify-center rounded-xl bg-gray-300'>
-														<FaPlusCircle size='28px' color='green' className='cursor-pointer' onClick={() => handleAdd(i)} />
+						);
+					})
+				) : error ? (
+					<div>Error</div>
+				) : (
+					menuData?.map((foodCategory, i) => {
+						return (
+							<div key={`menu_category_${i}`} className='space-y-8'>
+								<Divider editable handleEditCategory={handleEditCategory} index={i}>
+									{foodCategory.category}
+								</Divider>
+								<div className='flex flex-wrap justify-center gap-8'>
+									{foodCategory.items.map((item, j) => {
+										const oneRemaining: boolean = foodCategory.items.length === 1 ? true : false;
+										return (
+											<React.Fragment key={`menu_${j}`}>
+												{item.isNewInd ? (
+													<NewMenuCard index={i} foodCategory={foodCategory.category} handleCancel={handleCancel} handleSave={handleSave} />
+												) : (
+													<EditableMenuCard
+														key={`menu_item_${j}`}
+														itemTitle={item.name}
+														itemDescription={item.description}
+														itemPrice={item.price}
+														imgSrc={item.imgUrl}
+														imgPath={item.imgPath}
+														itemIndex={j}
+														categoryIndex={i}
+														menuData={menuData}
+														disabled={disabled}
+														oneRemaining={oneRemaining}
+														handleDelete={handleDelete}
+														setDisabled={setDisabled}
+													/>
+												)}
+												{(j === foodCategory.items.length - 1 || foodCategory.category === 'New Category') && (
+													<div className='flex min-h-[250px] w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
+														<div className='m-auto flex h-full w-full items-center justify-center rounded-xl bg-gray-300'>
+															<FaPlusCircle size='28px' color='green' className='cursor-pointer' onClick={() => handleAdd(i)} />
+														</div>
 													</div>
-												</div>
-											)}
-										</React.Fragment>
-									);
-								})}
+												)}
+											</React.Fragment>
+										);
+									})}
+								</div>
+								<div className='flex items-center justify-center'>
+									<button
+										disabled={disabled}
+										className='btn-primary rounded-3xl normal-case'
+										onClick={() => {
+											setIsModalOpen(true);
+											setCategoryToDelete(i);
+										}}
+									>
+										Delete Category
+									</button>
+								</div>
 							</div>
-							<div className='flex items-center justify-center'>
-								<button disabled={disabled} className='btn-primary rounded-3xl normal-case' onClick={() => handleDeleteCategory(i)}>
-									Delete Category
-								</button>
-							</div>
-						</div>
-					);
-				})
-			)}
-			<div className='flex items-center justify-center'>
-				<button className='btn-primary rounded-3xl normal-case' onClick={handleAddCategory}>
-					New Category
-				</button>
+						);
+					})
+				)}
+				<div className='flex items-center justify-center'>
+					<button className='btn-primary rounded-3xl normal-case' onClick={handleAddCategory}>
+						New Category
+					</button>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

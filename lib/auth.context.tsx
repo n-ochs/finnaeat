@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import { auth } from '@lib/firebase.config';
+
 import { Unsubscribe, User, onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase.config';
 
 interface IAuthContext {
 	activeUser: User;

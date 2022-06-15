@@ -2,17 +2,17 @@ import type { NextPage } from 'next';
 
 import AuthVerification from '@components/auth/auth_verification.component';
 import ContactInfo from '@components/admin/business_details/contact_info.component';
+import EditableMenu from '@components/admin/menu/editable_menu.component';
 import Layout from '@components/layout/layout.component';
 import SocialLinks from '@components/admin/business_details/social_links.component';
 
 import { Toaster } from 'react-hot-toast';
-import EditableMenu from '@components/admin/menu/editable_menu.component';
 
 const Admin: NextPage = () => {
 	return (
 		<AuthVerification>
 			<Toaster />
-			<Layout disableHero>
+			<Layout disableHero title='Admin'>
 				<div className='p-12'>
 					<EditableMenu />
 				</div>

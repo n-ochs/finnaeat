@@ -16,6 +16,7 @@ const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, foodCategory, handleC
 	const [newItemDescription, setNewItemDescription] = useState<string>('');
 	const [newItemPrice, setNewItemPrice] = useState<string>('');
 	const [newItemImgUrl, setNewItemImgUrl] = useState<string>('');
+	const [newItemImgPath, setNewItemImgPath] = useState<string>('');
 	const [newMenuItem, setNewMenuItem] = useState<INewMenuItem>();
 
 	const handleItemCancel: () => void = () => {
@@ -31,14 +32,15 @@ const NewMenuCard: React.FC<INewMenuCardProps> = ({ index, foodCategory, handleC
 			name: newItemTitle,
 			description: newItemDescription,
 			price: newItemPrice,
-			imgUrl: newItemImgUrl
+			imgUrl: newItemImgUrl,
+			imgPath: newItemImgPath
 		});
-	}, [newItemTitle, newItemDescription, newItemPrice, newItemImgUrl]);
+	}, [newItemTitle, newItemDescription, newItemPrice, newItemImgUrl, newItemImgPath]);
 
 	return (
 		<div className='relative w-[300px] transform rounded-xl border-1 border-solid border-gray-300 bg-white p-2 shadow-lg'>
 			<div className='flex flex-col'>
-				<ImageUploader isNewItem setNewItemImgUrl={setNewItemImgUrl} />
+				<ImageUploader isNewItem setNewItemImgUrl={setNewItemImgUrl} setNewItemImgPath={setNewItemImgPath} />
 				<div className='space-y-2 p-2'>
 					<input
 						type='text'

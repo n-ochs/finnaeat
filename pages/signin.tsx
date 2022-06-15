@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 
 const SignIn: NextPage = () => {
 	return (
-		<Layout disableHero disableFooter>
+		<Layout title='Sign In' disableHero disableFooter>
 			<Toaster />
 			<div className='flex h-[80vh] w-screen items-center justify-center'>
 				<SignInForm />

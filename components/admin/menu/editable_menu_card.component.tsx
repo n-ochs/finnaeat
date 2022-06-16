@@ -180,7 +180,12 @@ const EditableMenuCard: React.FC<IEditableMenuCardProps> = ({
 						onClick={() => setIsEditable(true)}
 					/>
 					<div className='mx-auto rounded-xl object-cover'>
-						<Image src={imgSrc === '' || imgSrc === null ? '/imgs/food-image.jpeg' : imgSrc} className='rounded-xl' width='288px' height='216px' />
+						<Image
+							src={imgSrc === '' || imgSrc === null ? '/imgs/FinnaEat-Small-Alligatoricon-transparent.jpg' : imgSrc}
+							className='rounded-xl'
+							width='288px'
+							height='216px'
+						/>
 					</div>
 					<div className='p-2'>
 						<h2 className='mb-2 text-lg font-bold'>{itemTitle}</h2>

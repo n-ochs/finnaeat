@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
 	}, [value]);
 
 	return (
-		<footer className='w-screen bg-primaryBrown p-4'>
+		<footer className='bg-primaryBrown p-4'>
 			<Toaster />
 			<div className='space-y-3'>
 				{/* Social Links */}
@@ -75,6 +75,12 @@ const Footer: React.FC = () => {
 						<BsTelephone className='mr-2' size='18px' />
 						{loading ? <div className='h-4 w-36 animate-pulse rounded-xl bg-gray-100' /> : <>{contactInformation?.phone || '504-215-3686'}</>}
 					</a>
+					{contactInformation?.secondaryPhone !== '' && (
+						<a className='flex items-center text-white' href={`tel:${contactInformation?.secondaryPhone}` || 'tel:504-215-3686'}>
+							<BsTelephone className='mr-2' size='18px' />
+							{loading ? <div className='h-4 w-36 animate-pulse rounded-xl bg-gray-100' /> : <>{contactInformation?.secondaryPhone}</>}
+						</a>
+					)}
 					<a className='flex items-center text-white' href={`mailto:${contactInformation?.email}` || 'mailto:finnaeatfoods@gmail.com'}>
 						<AiOutlineMail className='mr-2' size='18px' />
 						{loading ? <div className='h-4 w-44 animate-pulse rounded-xl bg-gray-100' /> : <>{contactInformation?.email || 'finnaeatfoods@gmail.com'}</>}

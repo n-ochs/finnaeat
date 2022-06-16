@@ -1,6 +1,7 @@
 export type IContactInformationData = {
 	email: string;
 	phone: string;
+	secondaryPhone: string;
 };
 
 export type ISocialLinksData = {

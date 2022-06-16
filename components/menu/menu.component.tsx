@@ -21,7 +21,7 @@ const Menu: React.FC = () => {
 	}, [value]);
 
 	return (
-		<div className='relative bg-menu-background bg-cover bg-center bg-no-repeat p-4'>
+		<div className='relative bg-menu-background bg-cover bg-center bg-no-repeat p-4' id='Menu'>
 			<div className='space-y-8'>
 				{loading ? (
 					PlaceholderMenuData.food.map((placeholderCategory, i) => {
@@ -42,7 +42,9 @@ const Menu: React.FC = () => {
 					menuData?.map((foodCategory, i) => {
 						return (
 							<div key={`menu_category_${i}`}>
-								<Divider editable={false}>{foodCategory.category}</Divider>
+								<Divider editable={false}>
+									<span className='text-2xl'>{foodCategory.category}</span>
+								</Divider>
 								<div className='flex flex-wrap justify-center gap-4'>
 									{foodCategory.items.map((item, j) => {
 										return (

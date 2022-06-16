@@ -24,9 +24,9 @@ const ContactInfo: React.FC = () => {
 		setPhoneEdit(true);
 	};
 
-	const handlePhoneSave: () => void = () => {
+	const handlePhoneSave: () => void = async () => {
 		if (newPhoneNumber.length > 0) {
-			updateDoc(businessDetailsRef, 'contact_information.phone', newPhoneNumber)
+			await updateDoc(businessDetailsRef, 'contact_information.phone', newPhoneNumber)
 				.then(() => {
 					toast.success('Updated Phone Number');
 					setPhoneEdit(false);
@@ -35,6 +35,26 @@ const ContactInfo: React.FC = () => {
 					toast.error('Error updating Phone Number. Please try again.');
 				});
 		}
+	};
+
+	/******************** SECONDARY PHONE ********************/
+	const [secondaryPhoneEdit, setSecondaryPhoneEdit] = useState<boolean>(false);
+	const [newSecondaryPhoneNumber, setNewSecondaryPhoneNumber] = useState<string>('');
+
+	const handleSecondaryPhoneEdit: () => void = () => {
+		setNewSecondaryPhoneNumber('');
+		setSecondaryPhoneEdit(true);
+	};
+
+	const handleSecondaryPhoneSave: () => void = async () => {
+		await updateDoc(businessDetailsRef, 'contact_information.secondaryPhone', newSecondaryPhoneNumber)
+			.then(() => {
+				toast.success('Updated Secondary Phone Number');
+				setSecondaryPhoneEdit(false);
+			})
+			.catch(() => {
+				toast.error('Error updating Secondary Phone Number. Please try again.');
+			});
 	};
 
 	/******************** EMAIL ********************/
@@ -46,9 +66,9 @@ const ContactInfo: React.FC = () => {
 		setEmailEdit(true);
 	};
 
-	const handleEmailSave: () => void = () => {
+	const handleEmailSave: () => void = async () => {
 		if (newEmailAddress.length > 0) {
-			updateDoc(businessDetailsRef, 'contact_information.email', newEmailAddress)
+			await updateDoc(businessDetailsRef, 'contact_information.email', newEmailAddress)
 				.then(() => {
 					toast.success('Updated Email Address');
 					setEmailEdit(false);
@@ -102,6 +122,49 @@ const ContactInfo: React.FC = () => {
 						<FaEdit className='absolute top-[-7px] right-[-10px] cursor-pointer bg-white' size='18px' onClick={handlePhoneEdit} />
 						<BsTelephone className='mr-2' size='18px' />
 						{loading ? <div className='h-4 w-36 animate-pulse rounded-xl bg-gray-400' /> : <>{contactInformation?.phone || 'No telephone'}</>}
+					</>
+				)}
+			</div>
+
+			{/* Secondary Phone Number */}
+			<div className='relative flex min-h-[68px] max-w-[95vw] items-center rounded-xl border-1 border-solid border-gray-600 bg-gray-100 py-4 px-5 shadow-lg lg:min-w-[496px]'>
+				{secondaryPhoneEdit ? (
+					<div className='w-full'>
+						<div className='flex w-full items-center'>
+							<BsTelephone size='18px' color='#C41D33' className='mr-2' />
+							<input
+								type='text'
+								value={newSecondaryPhoneNumber}
+								onChange={(e) => setNewSecondaryPhoneNumber(e.target.value)}
+								autoFocus
+								placeholder='xxx-xxx-xxxx (must include dashes)'
+								className='w-full rounded-md border-1 border-solid border-gray-400 px-2 py-1'
+							/>
+						</div>
+						<div className='flex items-center space-x-4'>
+							<button
+								className='btn-outlined mt-4 rounded-3xl normal-case'
+								onClick={() => {
+									setSecondaryPhoneEdit(false);
+									setNewSecondaryPhoneNumber('');
+								}}
+							>
+								Cancel
+							</button>
+							<button className='btn-primary mt-4 rounded-3xl normal-case' disabled={newPhoneNumber.length < 1} onClick={handleSecondaryPhoneSave}>
+								Save
+							</button>
+						</div>
+					</div>
+				) : (
+					<>
+						<FaEdit className='absolute top-[-7px] right-[-10px] cursor-pointer bg-white' size='18px' onClick={handleSecondaryPhoneEdit} />
+						<BsTelephone className='mr-2' size='18px' />
+						{loading ? (
+							<div className='h-4 w-36 animate-pulse rounded-xl bg-gray-400' />
+						) : (
+							<>{contactInformation?.secondaryPhone === '' ? 'No telephone (will not display)' : contactInformation?.secondaryPhone}</>
+						)}
 					</>
 				)}
 			</div>

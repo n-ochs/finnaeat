@@ -15,12 +15,15 @@ const SignInForm: React.FC = () => {
 
 	const handleSignIn: (e: FormEvent) => void = async (e: FormEvent) => {
 		e.preventDefault();
+		toast.loading('Please wait. Do not refresh the page.');
 		await signInWithEmailAndPassword(auth, emailAddress, password)
 			.then(() => {
-				toast.success('Successfully signed in');
+				toast.dismiss();
+				toast.success('Successfully signed in. Loading Admin Page...');
 				router.push('/admin');
 			})
 			.catch(() => {
+				toast.dismiss();
 				toast.error('Invalid credentials. Please try again.');
 				setEmailAddress('');
 				setPassword('');

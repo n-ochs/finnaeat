@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
 
 	const menuItems: { route: string; label: string }[] = [
 		{ route: '/', label: 'Home' },
-		{ route: '/about', label: 'About' },
+		{ route: '#', label: 'About' },
 		{ route: '#', label: 'Find' },
 		{ route: '#', label: 'Events' },
 		{ route: '#', label: 'Contact' }

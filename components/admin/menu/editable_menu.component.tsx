@@ -234,7 +234,7 @@ const EditableMenu: React.FC = () => {
 						return (
 							<div key={`menu_category_${i}`} className='space-y-8'>
 								<Divider editable handleEditCategory={handleEditCategory} index={i}>
-									{foodCategory.category}
+									<span className='text-2xl'>{foodCategory.category}</span>
 								</Divider>
 								<div className='flex flex-wrap justify-center gap-8'>
 									{foodCategory.items.map((item, j) => {

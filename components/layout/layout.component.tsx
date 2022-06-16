@@ -14,7 +14,7 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = ({ disableHero, disableFooter, title, children }) => {
 	return (
-		<div className='h-screen overflow-x-hidden'>
+		<div className='h-screen'>
 			<Head>
 				<title>{title ? title : 'Finna-Eat'}</title>
 			</Head>

@@ -151,7 +151,7 @@ const ContactInfo: React.FC = () => {
 							>
 								Cancel
 							</button>
-							<button className='btn-primary mt-4 rounded-3xl normal-case' disabled={newPhoneNumber.length < 1} onClick={handleSecondaryPhoneSave}>
+							<button className='btn-primary mt-4 rounded-3xl normal-case' disabled={newSecondaryPhoneNumber.length < 1} onClick={handleSecondaryPhoneSave}>
 								Save
 							</button>
 						</div>
